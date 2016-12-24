@@ -1,15 +1,14 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+ 	OrpheusMS: MapleStory Private Server based on OdinMS
+    Copyright (C) 2012 Aaron Weiss <aaron@deviant-core.net>
+    				Patrick Huy <patrick.huy@frz.cc>
+					Matthias Butz <matze@odinms.de>
+					Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation version 3 as published by
-    the Free Software Foundation. You may not use, modify or distribute
-    this program under any other version of the GNU Affero General Public
-    License.
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package provider.wz;
 
 import java.util.ArrayList;
@@ -32,37 +31,37 @@ import provider.MapleDataEntry;
 import provider.MapleDataFileEntry;
 
 public class WZDirectoryEntry extends WZEntry implements MapleDataDirectoryEntry {
-    private List<MapleDataDirectoryEntry> subdirs = new ArrayList<MapleDataDirectoryEntry>();
-    private List<MapleDataFileEntry> files = new ArrayList<MapleDataFileEntry>();
-    private Map<String, MapleDataEntry> entries = new HashMap<String, MapleDataEntry>();
+	private List<MapleDataDirectoryEntry> subdirs = new ArrayList<MapleDataDirectoryEntry>();
+	private List<MapleDataFileEntry> files = new ArrayList<MapleDataFileEntry>();
+	private Map<String, MapleDataEntry> entries = new HashMap<String, MapleDataEntry>();
 
-    public WZDirectoryEntry(String name, int size, int checksum, MapleDataEntity parent) {
-        super(name, size, checksum, parent);
-    }
+	public WZDirectoryEntry(String name, int size, int checksum, MapleDataEntity parent) {
+		super(name, size, checksum, parent);
+	}
 
-    public WZDirectoryEntry() {
-        super(null, 0, 0, null);
-    }
+	public WZDirectoryEntry() {
+		super(null, 0, 0, null);
+	}
 
-    public void addDirectory(MapleDataDirectoryEntry dir) {
-        subdirs.add(dir);
-        entries.put(dir.getName(), dir);
-    }
+	public void addDirectory(MapleDataDirectoryEntry dir) {
+		subdirs.add(dir);
+		entries.put(dir.getName(), dir);
+	}
 
-    public void addFile(MapleDataFileEntry fileEntry) {
-        files.add(fileEntry);
-        entries.put(fileEntry.getName(), fileEntry);
-    }
+	public void addFile(MapleDataFileEntry fileEntry) {
+		files.add(fileEntry);
+		entries.put(fileEntry.getName(), fileEntry);
+	}
 
-    public List<MapleDataDirectoryEntry> getSubdirectories() {
-        return Collections.unmodifiableList(subdirs);
-    }
+	public List<MapleDataDirectoryEntry> getSubdirectories() {
+		return Collections.unmodifiableList(subdirs);
+	}
 
-    public List<MapleDataFileEntry> getFiles() {
-        return Collections.unmodifiableList(files);
-    }
+	public List<MapleDataFileEntry> getFiles() {
+		return Collections.unmodifiableList(files);
+	}
 
-    public MapleDataEntry getEntry(String name) {
-        return entries.get(name);
-    }
+	public MapleDataEntry getEntry(String name) {
+		return entries.get(name);
+	}
 }

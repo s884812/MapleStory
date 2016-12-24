@@ -1,61 +1,65 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+ 	OrpheusMS: MapleStory Private Server based on OdinMS
+    Copyright (C) 2012 Aaron Weiss <aaron@deviant-core.net>
+    				Patrick Huy <patrick.huy@frz.cc>
+					Matthias Butz <matze@odinms.de>
+					Jan Christian Meyer <vimes@odinms.de>
 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package client.autoban;
 
 import client.MapleCharacter;
-import constants.ServerConstants;
 
 /**
- *
+ * 
  * @author kevintjuh93
  */
 public enum AutobanFactory {
-    MOB_COUNT,
-    FIX_DAMAGE,
-    HIGH_HP_HEALING,
-    FAST_HP_HEALING(30),
-    FAST_MP_HEALING(30),
-    GACHA_EXP,
-    TUBI(20, 15000),
-    SHORT_ITEM_VAC,
-    ITEM_VAC,
-    FAST_ATTACK(10, 30000),
-    MPCON(25, 30000);
-    
-    private int points;
-    private long expiretime;
+	MOB_COUNT, FIX_DAMAGE, HIGH_HP_HEALING, FAST_HP_HEALING(15), FAST_MP_HEALING(15), GACHA_EXP, TUBI(20, 15000), SHORT_ITEM_VAC, ITEM_VAC, FAST_ATTACK(10, 30000), MPCON(25, 30000);
 
-    private AutobanFactory() {
-        this(1, -1);
-    }
+	private int points;
+	private long expiretime;
 
-    private AutobanFactory(int points) {
-        this.points = points;
-        this.expiretime = -1;
-    }
+	private AutobanFactory() {
+		this(1, -1);
+	}
 
-    private AutobanFactory(int points, long expire) {
-        this.points = points;
-        this.expiretime = expire;
-    }
+	private AutobanFactory(int points) {
+		this.points = points;
+		this.expiretime = -1;
+	}
 
-    public int getMaximum() {
-        return points;
-    }
+	private AutobanFactory(int points, long expire) {
+		this.points = points;
+		this.expiretime = expire;
+	}
 
-    public long getExpire() {
-        return expiretime;
-    }
+	public int getMaximum() {
+		return points;
+	}
 
-    public void addPoint(AutobanManager ban, String reason) {
-        ban.addPoint(this, reason);
-    }
+	public long getExpire() {
+		return expiretime;
+	}
 
-    public void autoban(MapleCharacter chr, String value) {
-        chr.autoban("Autobanned for (" + this.name() + ": " + value + ")", 1);
-        chr.sendPolice("You have been blocked by the #b"+ ServerConstants.SERVERNAME + " police for hacking.#k.");
-    }
+	public void addPoint(AutobanManager ban, String reason) {
+		ban.addPoint(this, reason);
+	}
+
+	public void autoban(MapleCharacter chr, String value) {
+		chr.autoban("Autobanned for (" + this.name() + ": " + value + ")", 1);
+		chr.sendPolice("You have been blocked by #bMooplePolice#k for the HACK reason.");
+	}
 }

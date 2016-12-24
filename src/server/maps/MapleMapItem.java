@@ -1,14 +1,14 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
-                       Matthias Butz <matze@odinms.de>
-                       Jan Christian Meyer <vimes@odinms.de>
+ 	OrpheusMS: MapleStory Private Server based on OdinMS
+    Copyright (C) 2012 Aaron Weiss <aaron@deviant-core.net>
+    				Patrick Huy <patrick.huy@frz.cc>
+					Matthias Butz <matze@odinms.de>
+					Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License version 3
-    as published by the Free Software Foundation. You may not use, modify
-    or distribute this program under any other version of the
-    GNU Affero General Public License.
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,111 +17,113 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package server.maps;
 
 import java.awt.Point;
 import client.IItem;
 import client.MapleCharacter;
 import client.MapleClient;
+import java.util.concurrent.locks.ReentrantLock;
 import tools.MaplePacketCreator;
 
 public class MapleMapItem extends AbstractMapleMapObject {
 
-    protected IItem item;
-    protected MapleMapObject dropper;
-    protected int character_ownerid, meso, questid = -1;
-    protected byte type;
-    protected boolean pickedUp = false, playerDrop;
+	protected IItem item;
+	protected MapleMapObject dropper;
+	protected int character_ownerid, meso, questid = -1;
+	protected byte type;
+	protected boolean pickedUp = false, playerDrop;
+	public ReentrantLock itemLock = new ReentrantLock();
 
-    public MapleMapItem(IItem item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
-	setPosition(position);
-	this.item = item;
-	this.dropper = dropper;
-	this.character_ownerid = owner.getId();
-	this.meso = 0;
-	this.type = type;
-	this.playerDrop = playerDrop;
-    }
-
-    public MapleMapItem(IItem item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop, int questid) {
-	setPosition(position);
-	this.item = item;
-	this.dropper = dropper;
-	this.character_ownerid = owner.getId();
-	this.meso = 0;
-	this.type = type;
-	this.playerDrop = playerDrop;
-	this.questid = questid;
-    }
-
-    public MapleMapItem(int meso, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
-	setPosition(position);
-	this.item = null;
-	this.dropper = dropper;
-	this.character_ownerid = owner.getId();
-	this.meso = meso;
-	this.type = type;
-	this.playerDrop = playerDrop;
-    }
-
-    public final IItem getItem() {
-	return item;
-    }
-
-    public final int getQuest() {
-	return questid;
-    }
-
-    public final int getItemId() {
-	if (getMeso() > 0) {
-	    return meso;
+	public MapleMapItem(IItem item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
+		setPosition(position);
+		this.item = item;
+		this.dropper = dropper;
+		this.character_ownerid = owner.getId();
+		this.meso = 0;
+		this.type = type;
+		this.playerDrop = playerDrop;
 	}
-	return item.getItemId();
-    }
 
-    public final MapleMapObject getDropper() {
-	return dropper;
-    }
-
-    public final int getOwner() {
-	return character_ownerid;
-    }
-
-    public final int getMeso() {
-	return meso;
-    }
-
-    public final boolean isPlayerDrop() {
-	return playerDrop;
-    }
-
-    public final boolean isPickedUp() {
-	return pickedUp;
-    }
-
-    public void setPickedUp(final boolean pickedUp) {
-	this.pickedUp = pickedUp;
-    }
-
-    public byte getDropType() {
-	return type;
-    }
-
-    @Override
-    public final MapleMapObjectType getType() {
-	return MapleMapObjectType.ITEM;
-    }
-
-    @Override
-    public void sendSpawnData(final MapleClient client) {
-	if (questid <= 0 || (client.getPlayer().getQuestStatus(questid) == 1 && client.getPlayer().needQuestItem(questid, item.getItemId()))) {
-	    client.announce(MaplePacketCreator.dropItemFromMapObject(this, null, getPosition(), (byte) 2));
+	public MapleMapItem(IItem item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop, int questid) {
+		setPosition(position);
+		this.item = item;
+		this.dropper = dropper;
+		this.character_ownerid = owner.getParty() == null ? owner.getId() : owner.getPartyId();
+		this.meso = 0;
+		this.type = type;
+		this.playerDrop = playerDrop;
+		this.questid = questid;
 	}
-    }
 
-    @Override
-    public void sendDestroyData(final MapleClient client) {
-	client.announce(MaplePacketCreator.removeItemFromMap(getObjectId(), 1, 0));
-    }
+	public MapleMapItem(int meso, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
+		setPosition(position);
+		this.item = null;
+		this.dropper = dropper;
+		this.character_ownerid = owner.getParty() == null ? owner.getId() : owner.getPartyId();
+		this.meso = meso;
+		this.type = type;
+		this.playerDrop = playerDrop;
+	}
+
+	public final IItem getItem() {
+		return item;
+	}
+
+	public final int getQuest() {
+		return questid;
+	}
+
+	public final int getItemId() {
+		if (getMeso() > 0) {
+			return meso;
+		}
+		return item.getItemId();
+	}
+
+	public final MapleMapObject getDropper() {
+		return dropper;
+	}
+
+	public final int getOwner() {
+		return character_ownerid;
+	}
+
+	public final int getMeso() {
+		return meso;
+	}
+
+	public final boolean isPlayerDrop() {
+		return playerDrop;
+	}
+
+	public final boolean isPickedUp() {
+		return pickedUp;
+	}
+
+	public void setPickedUp(final boolean pickedUp) {
+		this.pickedUp = pickedUp;
+	}
+
+	public byte getDropType() {
+		return type;
+	}
+
+	@Override
+	public final MapleMapObjectType getType() {
+		return MapleMapObjectType.ITEM;
+	}
+
+	@Override
+	public void sendSpawnData(final MapleClient client) {
+		if (questid <= 0 || (client.getPlayer().getQuestStatus(questid) == 1 && client.getPlayer().needQuestItem(questid, item.getItemId()))) {
+			client.announce(MaplePacketCreator.dropItemFromMapObject(this, null, getPosition(), (byte) 2));
+		}
+	}
+
+	@Override
+	public void sendDestroyData(final MapleClient client) {
+		client.announce(MaplePacketCreator.removeItemFromMap(getObjectId(), 1, 0));
+	}
 }

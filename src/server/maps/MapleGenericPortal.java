@@ -1,15 +1,14 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+ 	OrpheusMS: MapleStory Private Server based on OdinMS
+    Copyright (C) 2012 Aaron Weiss <aaron@deviant-core.net>
+    				Patrick Huy <patrick.huy@frz.cc>
+					Matthias Butz <matze@odinms.de>
+					Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation version 3 as published by
-    the Free Software Foundation. You may not use, modify or distribute
-    this program under any other version of the GNU Affero General Public
-    License.
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +17,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package server.maps;
 
 import java.awt.Point;
@@ -29,116 +28,124 @@ import server.FourthJobQuestsPortalHandler;
 import tools.MaplePacketCreator;
 
 public class MapleGenericPortal implements MaplePortal {
-    private String name;
-    private String target;
-    private Point position;
-    private int targetmap;
-    private int type;
-    private boolean status = true;
-    private int id;
-    private String scriptName;
-    private boolean portalState;
 
-    public MapleGenericPortal(int type) {
-        this.type = type;
-    }
+	private String name;
+	private String target;
+	private Point position;
+	private int targetmap;
+	private int type;
+	private boolean status = true;
+	private int id;
+	private String scriptName;
+	private boolean portalState;
 
-    @Override
-    public int getId() {
-        return id;
-    }
+	public MapleGenericPortal(int type) {
+		this.type = type;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	@Override
+	public int getId() {
+		return id;
+	}
 
-    @Override
-    public String getName() {
-        return name;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    @Override
-    public Point getPosition() {
-        return position;
-    }
+	@Override
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public String getTarget() {
-        return target;
-    }
+	@Override
+	public Point getPosition() {
+		return position;
+	}
 
-    @Override
-    public void setPortalStatus(boolean newStatus) {
-        this.status = newStatus;
-    }
+	@Override
+	public String getTarget() {
+		return target;
+	}
 
-    @Override
-    public boolean getPortalStatus() {
-        return status;
-    }
+	@Override
+	public void setPortalStatus(boolean newStatus) {
+		this.status = newStatus;
+	}
 
-    @Override
-    public int getTargetMapId() {
-        return targetmap;
-    }
+	@Override
+	public boolean getPortalStatus() {
+		return status;
+	}
 
-    @Override
-    public int getType() {
-        return type;
-    }
+	@Override
+	public int getTargetMapId() {
+		return targetmap;
+	}
 
-    @Override
-    public String getScriptName() {
-        return scriptName;
-    }
+	@Override
+	public int getType() {
+		return type;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Override
+	public String getScriptName() {
+		return scriptName;
+	}
 
-    public void setPosition(Point position) {
-        this.position = position;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setTarget(String target) {
-        this.target = target;
-    }
+	public void setPosition(Point position) {
+		this.position = position;
+	}
 
-    public void setTargetMapId(int targetmapid) {
-        this.targetmap = targetmapid;
-    }
+	public void setTarget(String target) {
+		this.target = target;
+	}
 
-    @Override
-    public void setScriptName(String scriptName) {
-        this.scriptName = scriptName;
-    }
+	public void setTargetMapId(int targetmapid) {
+		this.targetmap = targetmapid;
+	}
 
-    @Override
-    public void enterPortal(MapleClient c) {
-        boolean changed = false;
-        if (getScriptName() != null) {
-            if (!FourthJobQuestsPortalHandler.handlePortal(getScriptName(), c.getPlayer())) {
-                changed = PortalScriptManager.getInstance().executePortalScript(this, c);
-            }
-        } else if (getTargetMapId() != 999999999) {
-            MapleMap to = c.getPlayer().getEventInstance() == null ? c.getChannelServer().getMapFactory().getMap(getTargetMapId()) : c.getPlayer().getEventInstance().getMapInstance(getTargetMapId());
-            MaplePortal pto = to.getPortal(getTarget());
-            if (pto == null) {// fallback for missing portals - no real life case anymore - intresting for not implemented areas
-                pto = to.getPortal(0);
-            }
-            c.getPlayer().changeMap(to, pto); //late resolving makes this harder but prevents us from loading the whole world at once
-            changed = true;
-        }
-        if (!changed) {
-            c.getSession().write(MaplePacketCreator.enableActions());
-        }
-    }
+	@Override
+	public void setScriptName(String scriptName) {
+		this.scriptName = scriptName;
+	}
 
-    public void setPortalState(boolean state) {
-        this.portalState = state;
-    }
+	@Override
+	public void enterPortal(MapleClient c) {
+		boolean changed = false;
+		if (getScriptName() != null) {
+			if (!FourthJobQuestsPortalHandler.handlePortal(getScriptName(), c.getPlayer())) {
+				changed = PortalScriptManager.getInstance().executePortalScript(this, c);
+			}
+		} else if (getTargetMapId() != 999999999) {
+			MapleMap to = c.getPlayer().getEventInstance() == null ? c.getChannelServer().getMapFactory().getMap(getTargetMapId()) : c.getPlayer().getEventInstance().getMapInstance(getTargetMapId());
+			MaplePortal pto = to.getPortal(getTarget());
+			if (pto == null) {// fallback for missing portals - no real life
+								// case anymore - intresting for not implemented
+								// areas
+				pto = to.getPortal(0);
+			}
+			c.getPlayer().changeMap(to, pto); // late resolving makes this
+												// harder but prevents us from
+												// loading the whole world at
+												// once
+			changed = true;
+		}
+		if (!changed) {
+			c.getSession().write(MaplePacketCreator.enableActions());
+		}
+	}
 
-    public boolean getPortalState() {
-        return portalState;
-    }
+	@Override
+	public void setPortalState(boolean state) {
+		this.portalState = state;
+	}
+
+	@Override
+	public boolean getPortalState() {
+		return portalState;
+	}
 }
