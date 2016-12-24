@@ -2,3 +2,6 @@ Revision 1
 *Se ha creado el QuestCreator.
 *Se ha incrementado el source o repack = OrpheusMS.
 *Se ha creado un Complete Quest.
+
+Revision 2
+*Nuevo script de peinados y caras.
