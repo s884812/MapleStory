@@ -22,34 +22,45 @@ package tools;
 
 import java.io.Serializable;
 
-public class Pair<E, F> implements Serializable {
-	private static final long serialVersionUID = -634786879149311046L;
+/**
+ * @author Aaron Weiss
+ */
+public class Triplet<E, F, G> implements Serializable { // why? because pairs of pairs imply something else
+	private static final long serialVersionUID = 9000504761605746651L;
 	private E left;
-	private F right;
+	private F middle;
+	private G right;
 
-	public Pair(E left, F right) {
+	public Triplet(E left, F middle, G right) {
 		this.left = left;
+		this.middle = middle;
 		this.right = right;
 	}
 
 	public E getLeft() {
 		return left;
 	}
+	
+	public F getMiddle() {
+		return middle;
+	}
 
-	public F getRight() {
+	public G getRight() {
 		return right;
 	}
 	
-	public void update(E left, F right) {
+	public void update(E left, F middle, G right) {
 		this.left = left;
+		this.middle = middle;
 		this.right = right;
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public boolean equals(Object o) {
 	    if (this.getClass() != o.getClass()) return false;
-	    if (this == (Pair) o) return true;
-	    Pair compare = (Pair) o;
-	    return compare.getLeft() == this.getLeft() && compare.getRight() == this.getRight();
+	    if (this == (Triplet) o) return true;
+	    Triplet compare = (Triplet) o;
+	    return compare.getLeft() == this.getLeft() && compare.getMiddle() == this.getMiddle() && compare.getRight() == this.getRight();
 	}
 }
+

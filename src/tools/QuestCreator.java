@@ -33,8 +33,8 @@ public class QuestCreator {
              
             String moople = con.readLine("Are you using MapleStory (non-RMI): (true/false) "); 
             while (!moople.equals("false") && !moople.equals("true")) { 
-                System.out.println("If you are using Moople non-RMI type true. Otherweise type false!"); 
-                moople = con.readLine("Are you using Moople (non-RMI): (true/false) "); 
+                System.out.println("If you are using MapleStory non-RMI type true. Otherweise type false!"); 
+                moople = con.readLine("Are you using MapleStory (non-RMI): (true/false) "); 
             } 
              
             String create_script = con.readLine("\r\nShall the QQC always add a basic NPC script for a created Quest? (true/false/?) "); 
@@ -61,10 +61,10 @@ public class QuestCreator {
             if (moople.equals("true")) { 
                 sb.append("moople=true").append("\r\n\r\n"); 
                  
-                String all_world = con.readLine("   Since you are using MapleStory. \r\n   Do you want an NPC Script created for all worlds? (true/false) "); 
+                String all_world = con.readLine("   Since you are using Moople. \r\n   Do you want an NPC Script created for all worlds? (true/false) "); 
                 while (!all_world.equals("true") && !all_world.equals("false") && !all_world.equals("?")) { 
                     System.out.println("If you want one for all worlds type true else type false."); 
-                    all_world = con.readLine("   Since you are using MapleStory.\r\n   Do you want an NPC Script created for all worlds? (true/false) "); 
+                    all_world = con.readLine("   Since you are using Moople.\r\n   Do you want an NPC Script created for all worlds? (true/false) "); 
                 } 
                                  
                 if (all_world.equals("true")) { 
@@ -73,7 +73,7 @@ public class QuestCreator {
                 } else if (all_world.equals("false")) { 
                     sb.append("all_world=false").append("\r\n");; 
                     try { 
-                        p.load(new FileInputStream("moople.ini")); 
+                        p.load(new FileInputStream("maplestory.ini")); 
                     } catch (Exception e) { 
                         System.out.println("There seems to be a problem. QQC will exit now."); 
                         System.exit(0); 
@@ -270,7 +270,7 @@ public class QuestCreator {
      
     public static void createQuestScript(int id, int npcid, String direction) { 
         StringBuilder b = new StringBuilder(); 
-        b.append("/**\r\n * Quick Quest: ").append(id).append("\r\n * Author: LikeABaws \r\n **/"); 
+        b.append("/**\r\n * Quick Quest: ").append(id).append("\r\n * Author: MapleStory v83 \r\n **/"); 
         b.append("\r\n\r\n"); 
         b.append("var id = ").append(id); 
         b.append("\r\n\r\n"); 
