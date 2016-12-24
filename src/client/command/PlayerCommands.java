@@ -63,7 +63,7 @@ public class PlayerCommands extends EnumeratedCommands {
 				default:
 					// chr.yellowMessage("Command: " + heading + sub[0] + ": does not exist.");
 					return false;
-				case afk:
+/*				case afk:
 					if (sub.length == 1) {
 						chr.setChalkboard("Away!");
 					} else {
@@ -237,12 +237,12 @@ public class PlayerCommands extends EnumeratedCommands {
 							chr.message("You cannot afford to heal. You need " + readableCost + " mesos.");
 						}
 					}
-					break;
+					break; */
 				case quit:
 					chr.saveToDB(true);
 					c.getSession().close(false);
 					break;
-				case rank:
+				/*case rank:
 					chr.message("You are rank " + chr.getRank() + ".");
 					break;
 				case rankings:
@@ -472,7 +472,7 @@ public class PlayerCommands extends EnumeratedCommands {
 					break;
 				case version:
 					chr.message(ServerConstants.SERVER_NAME + " (Orpheus " + ServerConstants.ORPHEUS_VERSION + ")");
-					break;
+					break; */
 			}
 			if (ServerConstants.USE_PARANOIA && ParanoiaConstants.PARANOIA_COMMAND_LOGGER && ParanoiaConstants.LOG_PLAYER_COMMANDS) {
 				MapleLogger.printFormatted(MapleLogger.PARANOIA_COMMAND, "[" + c.getPlayer().getName() + "] Used " + heading + sub[0] + ((sub.length > 1) ? " with parameters: " + joinStringFrom(sub, 1) : "."));
@@ -546,38 +546,38 @@ public class PlayerCommands extends EnumeratedCommands {
 	}
 	
 	private static enum Command {
-		afk("Marks you as away, or with an optional message."),
-		back("Marks you as returned."),
-		birthday("Sets your birthday for the Cash Shop!"),
-		bugs("Tells players where to report bugs!"),
-		buy("Purchases a rice cake for 1,000,000,000 mesos."), 
-		checkgm("Checks if a specified player is a GM."), 
-		checkrebirths("Checks a player's rebirths."),
-		checkrank("Checks a player's spot in the rankings."),
-		checkstaffrank("Checks a player's staff rank."),
-		checkstats("Checks a player's stats."), 
-		cody("Shortcut to Cody, job advancer and World Tour."), 
+	//	afk("Marks you as away, or with an optional message."),
+	//	back("Marks you as returned."),
+	//	birthday("Sets your birthday for the Cash Shop!"),
+	//	bugs("Tells players where to report bugs!"),
+	//	buy("Purchases a rice cake for 1,000,000,000 mesos."), 
+	//	checkgm("Checks if a specified player is a GM."), 
+	//	checkrebirths("Checks a player's rebirths."),
+	//	checkrank("Checks a player's spot in the rankings."),
+	//	checkstaffrank("Checks a player's staff rank."),
+	//	checkstats("Checks a player's stats."), 
+	//	cody("Shortcut to Cody, job advancer and World Tour."), 
 		dispose("Solves NPC problems."),
-		emo("Kills yourself."),
-		fmnpc("Shortcut to the FM NPC, Charles."),
-		gmlist("Presents a list of all GMs."),
-		hardcore("Enter hardcore mode, where experience is plentiful, and death is permanent."),
-		heal("Heals you, for a fee."),
-		help("Displays this help message."),
-		kin("Opens a conversation with Kin."),
-		nx("Gives you 100,000 NX for " + ((ServerConstants.FREE_NX) ? "free" : "a fee")),
+	//	emo("Kills yourself."),
+	//	fmnpc("Shortcut to the FM NPC, Charles."),
+	//	gmlist("Presents a list of all GMs."),
+	//	hardcore("Enter hardcore mode, where experience is plentiful, and death is permanent."),
+	//	heal("Heals you, for a fee."),
+	//	help("Displays this help message."),
+	//	kin("Opens a conversation with Kin."),
+	//	nx("Gives you 100,000 NX for " + ((ServerConstants.FREE_NX) ? "free" : "a fee")),
 		quit("Allows you to quickly exit from the game."),
-		rank("Checks your rank in the rankings."),
-		rankings("Displays the top 10 players."),
-		rates("Checks the server's rates."),
-		rebirth("Allows you to reborn at max level."), 
-		rebirths("Displays your rebirths."), 
-		save("Saves your character to the database."),
-		sell("Sells a rice cake for 1,000,000,000 mesos."),
-		stat("Allows you to raise your stats using your AP."),
-		stats("Displays your full stats."),
-		stocks("Manage your stock portfolio remotely."),
-		version("Displays server version information.");
+	//	rank("Checks your rank in the rankings."),
+	//	rankings("Displays the top 10 players."),
+	//	rates("Checks the server's rates."),
+	//	rebirth("Allows you to reborn at max level."), 
+	//	rebirths("Displays your rebirths."), 
+		save("Saves your character to the database.");
+	//	sell("Sells a rice cake for 1,000,000,000 mesos."),
+	//	stat("Allows you to raise your stats using your AP."),
+	//	stats("Displays your full stats."),
+	//	stocks("Manage your stock portfolio remotely."),
+	//	version("Displays server version information.");
 		
 	    private final String description;
 	    
