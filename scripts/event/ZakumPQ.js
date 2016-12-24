@@ -18,12 +18,18 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+/*
+ * @Author Lerk
+ * 
+ * Zakum Party Quest 
+ */
+
 var exitMap;
 var instanceId;
-var minPlayers = 3;
 
 function init() {
     instanceId = 1;
+    em.setProperty("shuffleReactors","true");
 }
 
 function monsterValue(eim, mobId) {
@@ -31,98 +37,75 @@ function monsterValue(eim, mobId) {
 }
 
 function setup() {
-    exitMap = em.getChannelServer().getMapFactory().getMap(105090800); // <exit>
-    var instanceName = "4jberserk" + instanceId;
-
+    exitMap = em.getChannelServer().getMapFactory().getMap(280090000); //room of tragedy
+    var instanceName = "ZakumPQ" + instanceId;
+	
+    //ZPQ maps, center area then 1-1 through 16-6 increasing gradually
+    //var instanceMaps = new Array(280010000, 280010010, 280010011, 280010020, 280010030, 280010031, 280010040, 280010041, 280010050, 280010060,
+    //	280010070, 280010071, 280010080, 280010081, 280010090, 280010091, 280010100, 280010101, 280010110, 280010120, 280010130, 280010140,
+    //	280010150, 280011000, 280011001, 280011002, 280011003, 280011004, 280011005, 280011006);
     var eim = em.newInstance(instanceName);
 	
     var mf = eim.getMapFactory();
 	
     instanceId++;
 	
-    var map = mf.getMap(910500200);
-    map.addMapTimer(3*60);
-    em.schedule("timeOut", 20 * 60000);
-
-    //you can't warp up to the rocks until all rogs are dead, I think?
-    eim.setProperty("canWarp","false");
+    var map = mf.getMap(280010000);
+    map.shuffleReactors();
+	
+    //no time limit yet until clock can be visible in all maps
+    //em.schedule("timeOut", 30 * 60000);
 	
     return eim;
 }
 
 function playerEntry(eim, player) {
-    var map = eim.getMapInstance(910500200);
+    var map = eim.getMapInstance(280010000);
     player.changeMap(map, map.getPortal(0));
 	
 //TODO: hold time across map changes
 //player.getClient().getSession().write(tools.MaplePacketCreator.getClock(1800));
 }
 
-function playerDead(eim, player) {
-}
-
 function playerRevive(eim, player) {
-    //if (eim.isLeader(player)) { //check for party leader
-    //boot whole party and end
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerExit(eim, party.get(i));
-    }
-    eim.dispose();
-/*/}
-	else { //boot dead player
-		// If only 2 players are left, uncompletable:
-		var party = eim.getPlayers();
-		if (party.size() <= minPlayers) {
-			for (var i = 0; i < party.size(); i++) {
-				playerExit(eim,party.get(i));
-			}
-			eim.dispose();
-		}
-		else
-			playerExit(eim, player);
-	}*/
-}
-
-function playerDisconnected(eim, player) {
-    //if (eim.isLeader(player)) { //check for party leader
-    //boot whole party and end
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        if (party.get(i).equals(player)) {
-            removePlayer(eim, player);
-        }
-        else {
-            playerExit(eim, party.get(i));
-        }
-    }
-    eim.dispose();
-/*/}
-	else { //boot d/ced player
-		// If only 2 players are left, uncompletable:
-		var party = eim.getPlayers();
-		if (party.size() < minPlayers) {
-			for (var i = 0; i < party.size(); i++) {
-				playerExit(eim,party.get(i));
-			}
-			eim.dispose();
-		}
-		else
-			playerExit(eim, player);
-	}*/
-}
-
-function leftParty(eim, player) {			
-    // If only 2 players are left, uncompletable:
-    var party = eim.getPlayers();
-    if (true) {
+    if (eim.isLeader(player)) { //check for party leader
+        //boot whole party and end
+        var party = eim.getPlayers();
         for (var i = 0; i < party.size(); i++) {
-            playerExit(eim,party.get(i));
+            playerExit(eim, party.get(i));
         }
         eim.dispose();
     }
-    else
+    else { //boot dead player
         playerExit(eim, player);
+    }
+    return false; // don't execute the standard reviving code
+}
+
+function playerDead(eim, player) {
+}
+
+function playerDisconnected(eim, player) {
+    if (eim.isLeader(player)) { //check for party leader
+        //boot whole party and end
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++) {
+            if (party.get(i).equals(player)) {
+                removePlayer(eim, player);
+            }
+            else {
+                playerExit(eim, party.get(i));
+            }
+        }
+        eim.dispose();
+    }
+    else { //boot d/ced player
+        removePlayer(eim, player);
+    }
+}
+
+function leftParty(eim, player) {
+    playerExit(eim, player);
 }
 
 function disbandParty(eim) {
@@ -147,14 +130,16 @@ function removePlayer(eim, player) {
 }
 
 function clearPQ(eim) {
+    //ZPQ does nothing special with winners
     var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++)
+    for (var i = 0; i < party.size(); i++) {
         playerExit(eim, party.get(i));
+    }
     eim.dispose();
 }
 
 function allMonstersDead(eim) {
-    eim.setProperty("canWarp","true");
+//do nothing; ZPQ has nothing to do with monster killing
 }
 
 function cancelSchedule() {
@@ -166,8 +151,9 @@ function timeOut() {
         var eim = iter.next();
         if (eim.getPlayerCount() > 0) {
             var pIter = eim.getPlayers().iterator();
-            while (pIter.hasNext())
+            while (pIter.hasNext()) {
                 playerExit(eim, pIter.next());
+            }
         }
         eim.dispose();
     }

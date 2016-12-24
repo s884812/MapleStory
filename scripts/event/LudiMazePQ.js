@@ -18,12 +18,19 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+/*
+ * @Author Raz
+ * 
+ * Ludi Maze PQ
+ */
+
 var exitMap;
 var instanceId;
-var minPlayers = 3;
+var finishMap;
 
 function init() {
     instanceId = 1;
+    em.setProperty("shuffleReactors", "true");
 }
 
 function monsterValue(eim, mobId) {
@@ -31,112 +38,73 @@ function monsterValue(eim, mobId) {
 }
 
 function setup() {
-    exitMap = em.getChannelServer().getMapFactory().getMap(105090800); // <exit>
-    var instanceName = "4jberserk" + instanceId;
-
+    exitMap = em.getChannelServer().getMapFactory().getMap(809050017);
+    finishMap = em.getChannelServer().getMapFactory().getMap(809050016);
+    var instanceName = "LudiMazePQ" + instanceId;
     var eim = em.newInstance(instanceName);
-	
     var mf = eim.getMapFactory();
-	
     instanceId++;
-	
-    var map = mf.getMap(910500200);
-    map.addMapTimer(3*60);
-    em.schedule("timeOut", 20 * 60000);
-
-    //you can't warp up to the rocks until all rogs are dead, I think?
-    eim.setProperty("canWarp","false");
-	
+    var eventTime = 15 * (1000 * 60);
+    em.schedule("timeOut", eventTime);
+    eim.startEventTimer(eventTime);
     return eim;
 }
 
 function playerEntry(eim, player) {
-    var map = eim.getMapInstance(910500200);
+    var map = eim.getMapInstance(809050000);
     player.changeMap(map, map.getPortal(0));
 	
-//TODO: hold time across map changes
-//player.getClient().getSession().write(tools.MaplePacketCreator.getClock(1800));
 }
 
 function playerDead(eim, player) {
-}
-
-function playerRevive(eim, player) {
-    //if (eim.isLeader(player)) { //check for party leader
-    //boot whole party and end
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerExit(eim, party.get(i));
+    if (player.isAlive()) { //don't trigger on death, trigger on manual revive
+        if (eim.isLeader(player)) { //check for party leader
+            var party = eim.getPlayers();
+            for (var i = 0; i < party.size(); i++)
+                playerExit(eim, party.get(i));
+            eim.dispose();
+        }
+        else
+            playerExit(eim, player);
     }
-    eim.dispose();
-/*/}
-	else { //boot dead player
-		// If only 2 players are left, uncompletable:
-		var party = eim.getPlayers();
-		if (party.size() <= minPlayers) {
-			for (var i = 0; i < party.size(); i++) {
-				playerExit(eim,party.get(i));
-			}
-			eim.dispose();
-		}
-		else
-			playerExit(eim, player);
-	}*/
 }
 
 function playerDisconnected(eim, player) {
-    //if (eim.isLeader(player)) { //check for party leader
-    //boot whole party and end
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        if (party.get(i).equals(player)) {
-            removePlayer(eim, player);
-        }
-        else {
-            playerExit(eim, party.get(i));
-        }
-    }
-    eim.dispose();
-/*/}
-	else { //boot d/ced player
-		// If only 2 players are left, uncompletable:
-		var party = eim.getPlayers();
-		if (party.size() < minPlayers) {
-			for (var i = 0; i < party.size(); i++) {
-				playerExit(eim,party.get(i));
-			}
-			eim.dispose();
-		}
-		else
-			playerExit(eim, player);
-	}*/
-}
-
-function leftParty(eim, player) {			
-    // If only 2 players are left, uncompletable:
-    var party = eim.getPlayers();
-    if (true) {
-        for (var i = 0; i < party.size(); i++) {
-            playerExit(eim,party.get(i));
-        }
+    if (eim.isLeader(player)) { //check for party leader
+        //boot whole party and end
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++)
+            if (party.get(i).equals(player))
+                removePlayer(eim, player);
+            else
+                playerExit(eim, party.get(i));
         eim.dispose();
     }
     else
-        playerExit(eim, player);
+        removePlayer(eim, player);
+}
+
+function leftParty(eim, player) {
+    playerExit(eim, player);
 }
 
 function disbandParty(eim) {
     //boot whole party and end
     var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
+    for (var i = 0; i < party.size(); i++)
         playerExit(eim, party.get(i));
-    }
     eim.dispose();
 }
 
 function playerExit(eim, player) {
     eim.unregisterPlayer(player);
     player.changeMap(exitMap, exitMap.getPortal(0));
+}
+
+
+function playerFinish(eim, player) {
+    eim.unregisterPlayer(player);
+    player.changeMap(finishMap, finishMap.getPortal(0));
 }
 
 //for offline players
@@ -148,13 +116,14 @@ function removePlayer(eim, player) {
 
 function clearPQ(eim) {
     var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++)
-        playerExit(eim, party.get(i));
+    for (var i = 0; i < party.size(); i++) {
+        playerFinish(eim, party.get(i));
+    }
     eim.dispose();
 }
 
 function allMonstersDead(eim) {
-    eim.setProperty("canWarp","true");
+//do nothing; LMPQ has nothing to do with monster killing
 }
 
 function cancelSchedule() {
@@ -171,4 +140,8 @@ function timeOut() {
         }
         eim.dispose();
     }
+}
+
+function playerRevive(eim, player) {
+     
 }

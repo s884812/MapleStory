@@ -31,7 +31,7 @@ function scheduleNew() {
     cal.set(java.util.Calendar.SECOND, 0);
     var nextTime = cal.getTimeInMillis();
     while (nextTime <= java.lang.System.currentTimeMillis())
-        nextTime += 300 * 1000;
+        nextTime += 15 * 60 * 1000; // 15 minutes
     setupTask = em.scheduleAtTimestamp("start", nextTime);
 }
 
@@ -41,7 +41,6 @@ function cancelSchedule() {
 
 function start() {
     scheduleNew();
-    var msg = new Array("To delete a character, speak to a Maple Administrator!", "For an optimal leveling experience, try the Free Market rooms!", "Remember to keep an eye out for new updates!");
-    var c = Math.floor(Math.random() * msg.length);
-    em.getChannelServer().yellowWorldMessage("[" + em.getTipName() + "] " + msg[c]);
+    em.updateRankings(); 
+    // probably should add something for job rankings at some point.
 }
