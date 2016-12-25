@@ -33,9 +33,9 @@ public class Output {
 	}
 	
 	public static void print(String message, boolean newLine) {
-		System.out.print("[OrpheusMS] [" + now() + "] " + message + ((newLine) ? "\n" : ""));
+		System.out.print("[MapleStory] [" + now() + "] " + message + ((newLine) ? "\n" : ""));
 		if (ParanoiaConstants.PARANOIA_CONSOLE_LOGGER) {
-			MapleLogger.printFormatted(MapleLogger.PARANOIA_CONSOLE, "[OrpheusMS] " + message, newLine);
+			MapleLogger.printFormatted(MapleLogger.PARANOIA_CONSOLE, "[MapleStory] " + message, newLine);
 		}
 	}
 

@@ -12,3 +12,6 @@ Revision 3
 *Se ha creado Legend Sistema.
 *Se ha puesto Auto-Dispose.
 *Se ha puesto Nuevos 3 NPC ("9010018, 9105002, 9120008, 100200").
+
+Revision 4
+*Se ha puesto Consola de Estado de inicio.

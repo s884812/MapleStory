@@ -85,6 +85,9 @@ public class ServerConstants {
 	public static final long PET_FULLNESS_START_DELAY = 18000; // delay before initial fullness update in ms.
 	public static final boolean PETS_NEVER_HUNGRY = false; // if true, pets will never grow hungry.
 	public static final boolean GM_PETS_NEVER_HUNGRY = true; // if true, pets of GMs will never grow hungry.
+        
+        //GM HIDE SHOW
+        public static boolean GM_HIDE_SHOW_OTHERS = true;
 	
 	// IP Configuration
 	public static final String HOST = "ms1.hopto.org"; // Server IP address

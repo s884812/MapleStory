@@ -28,6 +28,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import net.server.Channel;
+import net.server.Server;
 import scripting.AbstractScriptManager;
 import tools.Output;
 
@@ -51,6 +52,7 @@ public class EventScriptManager extends AbstractScriptManager {
 	public EventScriptManager(Channel cserv, String[] scripts) {
 		super();
 		for (String script : scripts) {
+                    Server.getConsole().addEvent(script);
 			if (!script.equals("")) {
 				Invocable iv = getInvocable("event/" + script + ".js", null);
 				events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));

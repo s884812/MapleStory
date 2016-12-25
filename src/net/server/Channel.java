@@ -148,6 +148,7 @@ public final class Channel {
 	}
 
 	public void addPlayer(MapleCharacter chr) {
+                Server.getConsole().loadPlayers();
 		players.addPlayer(chr);
 		chr.announce(MaplePacketCreator.serverMessage(serverMessage));
 	}
@@ -157,6 +158,7 @@ public final class Channel {
 	}
 
 	public void removePlayer(MapleCharacter chr) {
+            Server.getConsole().loadPlayers();
 		players.removePlayer(chr.getId());
 	}
 

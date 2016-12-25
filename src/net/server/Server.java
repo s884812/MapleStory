@@ -48,6 +48,7 @@ import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
 import gm.server.GMServer;
+import net.server.console.ConsoleGUI;
 import server.TimerManager;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -80,6 +81,9 @@ public class Server implements Runnable {
 	private boolean online = false;
 	private boolean gmServerEnabled = false;
 	private boolean debugMode = false;
+        
+        //Console
+        private static ConsoleGUI console = null; 
 
 	public static Server getInstance() {
 		if (instance == null) {
@@ -246,6 +250,34 @@ public class Server implements Runnable {
 		Output.print("Server is now online! (Took " + ((System.currentTimeMillis() - loadingStartTime)) + "ms)");
 		online = true;
 	}
+        
+        public void restart() {
+        for (World w : getWorlds()) {
+            w.shutdown();
+        }
+        TimerManager.getInstance().purge();
+        TimerManager.getInstance().stop();
+        worlds.clear();
+        worlds = null;
+        channels.clear();
+        channels = null;
+        worldRecommendedList.clear();
+        worldRecommendedList = null;
+        acceptor.unbind();
+        acceptor = null;
+        instance = null;
+        System.out.println("");
+        System.out.println("");
+        System.out.println("rnRestarting the server....rn");
+        getInstance().run();
+    }  
+        
+        public static ConsoleGUI getConsole() {
+        if (console == null) {
+            console = new ConsoleGUI();
+        }
+        return console;
+    }  
 
 	public void shutdown() {
 		try {
@@ -267,8 +299,9 @@ public class Server implements Runnable {
 	}
 
 	public static void main(String args[]) {
-		Server.getInstance().run();
-	}
+            //Server.getInstance().run();
+            Server.getConsole().main(null);
+        }  
 	
 	public boolean isGMServerEnabled() {
 		return gmServerEnabled;

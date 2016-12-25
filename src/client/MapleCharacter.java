@@ -5309,4 +5309,33 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         } catch (Exception Ex) {
         }
     }
+    
+    public void Hide(boolean hide, boolean login) {
+        if (isGM() && hide != this.hidden) {
+            if (!hide) {
+                this.hidden = false;
+                announce(MaplePacketCreator.getGMEffect(0x10, (byte) 0));
+                getMap().broadcastMessage(this, MaplePacketCreator.spawnPlayerMapobject(this), false);
+                updatePartyMemberHP();
+            } else if (ServerConstants.GM_HIDE_SHOW_OTHERS) {
+                this.hidden = true;
+                announce(MaplePacketCreator.getGMEffect(0x10, (byte) 1));
+                for (MapleMapObject mmo : getMap().getAllPlayer()) {
+                    MapleCharacter character = (MapleCharacter) mmo;
+                    if (character.isGM()) {
+                        character.announce(MaplePacketCreator.spawnPlayerMapobject(this));
+                        character.announce(MaplePacketCreator.getGMEffect(0x10, (byte) 1));
+                        updatePartyMemberHP();
+                    }
+                }
+            } else {
+                this.hidden = true;
+                announce(MaplePacketCreator.getGMEffect(0x10, (byte) 1));
+                if (!login) {
+                    getMap().broadcastMessage(this, MaplePacketCreator.removePlayerFromMap(getId()), false);
+                }
+            }
+            announce(MaplePacketCreator.enableActions());
+        }        
+    }
 }
