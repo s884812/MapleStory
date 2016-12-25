@@ -65,6 +65,8 @@ import server.partyquest.Pyramid.PyramidMode;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import client.MapleCQuests;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -744,7 +746,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             case 4:  
                 return "You already accepted: "; 
             case 5: 
-                return ". Do you want to cancel it?"; 
+                return "Do you want to cancel it?"; 
             case 6: 
                 return "Quest Complete!"; 
             case 7: 
@@ -752,4 +754,32 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         } 
         return ""; 
     }  
+    
+    public int getBossLog(String bossid) {
+        return getPlayer().getBossLog(bossid);
+    }
+
+    public int getGiftLog(String bossid) {
+        return getPlayer().getGiftLog(bossid);
+    }
+
+    public void setBossLog(String bossid) {
+        getPlayer().setBossLog(bossid);
+    }
+    
+    public String getRecroNews() throws SQLException {
+    StringBuilder ret = new StringBuilder();
+        PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT title, message, date FROM recronews ORDER BY newsid desc LIMIT 5");
+        ResultSet rs = ps.executeQuery();
+            try {
+                while (rs.next()) {
+                    ret.append("\r\n#e").append(rs.getString("title")).append(" - (").append(rs.getString("date")).append(")#n\r\n").append(rs.getString("message")).append("\r\n");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(NPCConversationManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+         ps.close();
+         rs.close();
+    return ret.toString();
+}
 }

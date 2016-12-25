@@ -1299,7 +1299,7 @@ public class MaplePacketCreator {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 		mplew.writeShort(SendOpcode.AVATAR_MEGA.getValue());
 		mplew.writeInt(itemId);
-		mplew.writeMapleAsciiString(medal + chr.getName());
+		mplew.writeMapleAsciiString(chr.getLegend() + chr.getName());
 		for (String s : message) {
 			mplew.writeMapleAsciiString(s);
 		}

@@ -249,6 +249,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         private int story, storypoints; 
         private int questkills, questkills2; 
         private int questidd, queststatus;
+        
+        //System of Legend
+        private int legend;
+        private int monstercount, horntail_slyed, pinkbeen_slyed;  
 
 	private MapleCharacter() {
 		setStance(0);
@@ -2810,6 +2814,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 			int mounttiredness = rs.getInt("mounttiredness");
 			ret.guildid = rs.getInt("guildid");
 			ret.guildrank = rs.getInt("guildrank");
+                        ret.legend = rs.getInt("legend");
+                        ret.monstercount = rs.getInt("monstercount");
+                        ret.horntail_slyed = rs.getInt("horntail_slyed");
+                        ret.pinkbeen_slyed = rs.getInt("pinkbeen_slyed");
 			ret.allianceRank = rs.getInt("allianceRank");
 			ret.familyId = rs.getInt("familyId");
 			ret.bookCover = rs.getInt("monsterbookcover");
@@ -3642,15 +3650,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 			PreparedStatement ps;
 			if (ServerConstants.ENABLE_HARDCORE_MODE) {
 				if (update) {
-					ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, rebirths = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, questidd = ?, hardcore = ?, dead = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+					ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, rebirths = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, questidd = ?, legend = ?, monstercount = ?, horntail_slyed = ?, pinkbeen_slyed = ?, hardcore = ?, dead = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
 				} else {
-					ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, gachaexp, hp, mp, maxhp, maxmp, sp, ap, rebirths, gm, skincolor, gender, job, hair, face, map, meso, hpMpUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, mountlevel, mounttiredness, mountexp, equipslots, useslots, setupslots, etcslots, monsterbookcover, vanquisherStage, dojopoints, lastDojoStage, finishedDojoTutorial, vanquisherKills, matchcardwins, matchcardlosses, matchcardties, omokwins, omoklosses, omokties, questidd, hardcore, dead, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+					ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, gachaexp, hp, mp, maxhp, maxmp, sp, ap, rebirths, gm, skincolor, gender, job, hair, face, map, meso, hpMpUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, mountlevel, mounttiredness, mountexp, equipslots, useslots, setupslots, etcslots, monsterbookcover, vanquisherStage, dojopoints, lastDojoStage, finishedDojoTutorial, vanquisherKills, matchcardwins, matchcardlosses, matchcardties, omokwins, omoklosses, omokties, questidd, legend, monstercount, horntail_slyed, pinkbeen_slyed, hardcore, dead, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 				}
 			} else {
 				if (update) {
-					ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, rebirths = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, questidd = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+					ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, rebirths = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, questidd = ?, legend = ?, monstercount = ?, horntail_slyed = ?, pinkbeen_slyed = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
 				} else {
-					ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, gachaexp, hp, mp, maxhp, maxmp, sp, ap, rebirths, gm, skincolor, gender, job, hair, face, map, meso, hpMpUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, mountlevel, mounttiredness, mountexp, equipslots, useslots, setupslots, etcslots, monsterbookcover, vanquisherStage, dojopoints, lastDojoStage, finishedDojoTutorial, vanquisherKills, matchcardwins, matchcardlosses, matchcardties, omokwins, omoklosses, omokties, questidd, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+					ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, gachaexp, hp, mp, maxhp, maxmp, sp, ap, rebirths, gm, skincolor, gender, job, hair, face, map, meso, hpMpUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, mountlevel, mounttiredness, mountexp, equipslots, useslots, setupslots, etcslots, monsterbookcover, vanquisherStage, dojopoints, lastDojoStage, finishedDojoTutorial, vanquisherKills, matchcardwins, matchcardlosses, matchcardties, omokwins, omoklosses, omokties, questidd, legend, monstercount, horntail_slyed, pinkbeen_slyed, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,? ,?)", Statement.RETURN_GENERATED_KEYS);
 				}
 			}
 			if (gmLevel < 1 && level > 199) {
@@ -3749,23 +3757,27 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 			ps.setInt(47, omoklosses);
 			ps.setInt(48, omokties);
                         ps.setInt(49, questidd);
+                        ps.setInt(50, legend);
+                        ps.setInt(51, monstercount);
+                        ps.setInt(52, horntail_slyed);
+                        ps.setInt(53, pinkbeen_slyed);
 			if (ServerConstants.ENABLE_HARDCORE_MODE) {
-				ps.setInt(50, hardcore ? 1 : 0);
-				ps.setInt(51, dead ? 1 : 0);
+				ps.setInt(54, hardcore ? 1 : 0);
+				ps.setInt(55, dead ? 1 : 0);
 				if (update) {
-					ps.setInt(52, id);
+					ps.setInt(56, id);
 				} else {
-					ps.setInt(52, accountid);
-					ps.setString(53, name);
-					ps.setInt(54, world);
+					ps.setInt(57, accountid);
+					ps.setString(58, name);
+					ps.setInt(59, world);
 				}
 			} else {
 				if (update) {
-					ps.setInt(50, id);
+					ps.setInt(54, id);
 				} else {
-					ps.setInt(50, accountid);
-					ps.setString(51, name);
-					ps.setInt(52, world);
+					ps.setInt(54, accountid);
+					ps.setString(55, name);
+					ps.setInt(56, world);
 				}
 			}
 			if (ServerConstants.USE_MAPLE_STOCKS) {
@@ -5141,4 +5153,160 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             System.out.println("Tried to save a duplicate questid to db.");
         }
     }  
+        
+     public int getMonsterCount() {
+        return monstercount;
+    }
+
+    public int getHorntailSlyed() {
+        return horntail_slyed;
+    }
+
+    public int getPinkBeenSlyed() {
+        return pinkbeen_slyed;
+    }
+
+    public void setMonsterCount(int set) {
+        this.monstercount = set;
+    }
+
+    public void setHorntailSlyed(int set) {
+        this.horntail_slyed = set;
+    }
+
+    public void setPinkBeenSlyed(int set) {
+        this.pinkbeen_slyed = set;
+    }
+
+    public void gainMonsterCount(int gain) {
+        setMonsterCount(getMonsterCount() + gain);
+    }
+
+    public void gainHorntailSlyed(int gain) {
+        setHorntailSlyed(getHorntailSlyed() + gain);
+    }
+
+    public void gainPinkBeenSlyed(int gain) {
+        setPinkBeenSlyed(getPinkBeenSlyed() + gain);
+    }
+
+    public int getLegendById() {
+        return legend;
+    }
+    public String Legend() {
+        if (legend == 1) {
+            return "GameMaster";
+        } else if (legend == 2) {
+            return "BEGINNER";
+        } else if (legend == 3) {
+            return "PartyQuestsMania";
+        } else if (legend == 4) {
+            return "QuestSpecialists";
+        } else if (legend == 5) {
+            return "SuperHunter";
+        } else if (legend == 6) {
+            return "King";
+        } else if (legend == 7) {
+            return "Devil";
+        } else if (legend == 8) {
+            return "Genius";
+        } else if (legend == 9) {
+            return "Ninja";
+        } else if (legend == 10) {
+            return "Sea King";
+        } else if (legend == 11) {
+            return "Fame Star";
+        } else if (legend == 12) {
+            return "Maple Idle Star";
+        } else if (legend == 13) {
+            return "Horntail Slyer";
+        } else if (legend == 14) {
+            return "Pinkbeen Slyer";
+        } else if (legend == 15) {
+            return "Rebirth Power man";
+        } else if (legend == 16) {
+            return "Loss King";
+        } else if (legend == 17) {
+            return "Win King";
+        } else if (legend == 18) {
+            return "Romeo";
+        } else if (legend == 19) {
+            return "Juliet";
+        } else if (legend == 20) {
+            return "VIPPER";
+        } else if (legend == 21) {
+            return "Rebirth King";
+        } else {
+            return null;
+        }
+    }
+
+    public String getLegend() {
+        if (legend != 0) {
+            return "<" + Legend() + "> ";
+        } else {
+            return "";
+        }
+    }
+
+    public void setlegend(int legendid) {
+        this.legend = legendid;
+    }  
+    
+    public int getBossLog(String bossid) {
+        Connection con1 = DatabaseConnection.getConnection();
+        try {
+            int ret_count = 0;
+            PreparedStatement ps;
+            ps = con1.prepareStatement("select count(*) from bosslog where characterid = ? and bossid = ? and lastattempt >= subtime(current_timestamp, '1 0:0:0.0')");
+            ps.setInt(1, id);
+            ps.setString(2, bossid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) 
+                ret_count = rs.getInt(1);
+            else
+                ret_count = -1;
+            rs.close();
+            ps.close();
+            return ret_count;
+        } catch (Exception Ex) {
+            return -1;
+        }
+    }
+
+    public int getGiftLog(String bossid) {
+        Connection con1 = DatabaseConnection.getConnection();
+        try {
+            int ret_count = 0;
+            PreparedStatement ps;
+            ps = con1.prepareStatement("select count(*) from bosslog where accountid = ? and bossid = ? and lastattempt >= subtime(current_timestamp, '1 0:0:0.0')");
+            ps.setInt(1, accountid);
+            ps.setString(2, bossid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) 
+                ret_count = rs.getInt(1);
+            else
+                ret_count = -1;
+            rs.close();
+            ps.close();
+            return ret_count;
+        } catch (Exception Ex) {
+            return -1;
+        }
+    }
+
+    //setBossLog module
+    public void setBossLog(String bossid) {
+        Connection con1 = DatabaseConnection.getConnection();
+        try {
+            PreparedStatement ps;
+            ps = con1.prepareStatement("insert into bosslog (accountid, characterid, bossid) values (?,?,?)");
+            ps.setInt(1, accountid);
+            ps.setInt(2, id);
+            ps.setString(3, bossid);
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception Ex) {
+        }
+    }
 }

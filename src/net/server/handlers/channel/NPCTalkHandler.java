@@ -36,6 +36,9 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
 			return;
 		}
 		int oid = slea.readInt();
+                if(NPCScriptManager.getInstance().getCM(c) != null){
+                dispose(c);
+                } 
 		MapleMapObject obj = c.getPlayer().getMap().getMapObject(oid);
 		if (obj instanceof MapleNPC) {
 			MapleNPC npc = (MapleNPC) obj;
@@ -57,4 +60,9 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
 			NPCScriptManager.getInstance().start(c, ((PlayerNPCs) obj).getId(), null, null);
 		}
 	}
+
+    public void dispose(MapleClient c){
+        c.announce(MaplePacketCreator.enableActions());
+        NPCScriptManager.getInstance().getCM(c).dispose();
+    }  
 }

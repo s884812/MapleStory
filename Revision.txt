@@ -5,3 +5,10 @@ Revision 1
 
 Revision 2
 *Nuevo script de peinados y caras.
+
+Revision 3
+*Se ha incrementado BossLog.
+*Se ha creado Recronews.
+*Se ha creado Legend Sistema.
+*Se ha puesto Auto-Dispose.
+*Se ha puesto Nuevos 3 NPC ("9010018, 9105002, 9120008, 100200").

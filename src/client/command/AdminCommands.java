@@ -27,6 +27,11 @@ import constants.ServerConstants;
 import net.server.Channel;
 import client.MapleCharacter;
 import client.MapleClient;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import tools.DatabaseConnection;
 
 /**
  * @author Aaron Weiss
@@ -57,6 +62,20 @@ public class AdminCommands extends EnumeratedCommands {
 						chr.dropMessage("Paranoia Log Clearing is forbidden by the server.");
 					}
 					break;
+                                case news:
+                                        String title = (sub[1]);
+                                        String message = AdminCommands.joinStringFrom(sub, 2);
+                                      try {
+                                          java.sql.Connection con = DatabaseConnection.getConnection();
+                                          PreparedStatement ps = con.prepareStatement("INSERT INTO recronews ( title, message, date ) VALUES ( ?, ?, ? )");
+                                          ps.setString(1, title);
+                                          ps.setString(2, message);
+                                          ps.setString(3, now("dd/MM/yy"));
+                                          ps.executeUpdate();
+                                          ps.close();
+                                      } catch (SQLException e) {
+                                          chr.dropMessage("[Error] - Cannot save MapleStory news!");
+                                      }                            
 				case help:
 					if (sub.length > 1) {
 						if (sub[1].equalsIgnoreCase("admin")) {
@@ -123,9 +142,17 @@ public class AdminCommands extends EnumeratedCommands {
 	public static char getHeading() {
 		return heading;
 	}
+
+        public static String now(String dateFormat) {
+                         Calendar cal = Calendar.getInstance();
+                         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+                         return sdf.format(cal.getTime());
+
+        }
 	
 	private static enum Command {
 		clearlogs("Clear Paranoia log files."),
+                news("Create news notices"),
 		help("Displays this help message."),
 		setgmlevel("Sets a victim's GM level.");
 

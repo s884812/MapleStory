@@ -562,6 +562,7 @@ public class MapleMap {
 	}
 
 	public void killMonster(final MapleMonster monster, final MapleCharacter chr, final boolean withDrops, final boolean secondTime, int animation) {
+            chr.gainMonsterCount(1);
             if ((monster.getId() == chr.getCQuest().getTargetId(1)) || (monster.getId() == chr.getCQuest().getTargetId(2))) { 
             chr.makeQuestProgress(monster.getId(), 0); 
         }  
@@ -604,9 +605,10 @@ public class MapleMap {
 				}
 			}
 		}
-		if (monster.getId() == 8810018) {
+		if (monster.getId() == 8810018) { 
 			for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
 				for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
+                                     player.gainHorntailSlyed(1);
 					if (player.getMapId() == 240000000) {
 						player.message("Mysterious power arose as I heard the powerful cry of the Nine Spirit Baby Dragon.");
 					} else {
