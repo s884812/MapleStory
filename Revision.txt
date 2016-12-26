@@ -15,3 +15,7 @@ Revision 3
 
 Revision 4
 *Se ha puesto Consola de Estado de inicio.
+
+Revision 5
+*Se ha agregado Cliente nuevo.
+*Se ha agregado los nuevos WZ. (XML)
