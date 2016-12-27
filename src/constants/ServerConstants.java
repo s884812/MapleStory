@@ -52,7 +52,7 @@ public class ServerConstants {
 	
 	// Login Configuration
 	public static final boolean AUTO_UNSTUCK_ACCOUNTS = true; // if true, automatically attempt to unstuck stuck accounts.
-	public static final boolean ENABLE_AUTOREGISTER = true; // if true, enables autoregistration upon login of nonexistant accounts.
+	public static final boolean ENABLE_AUTOREGISTER = false; // if true, enables autoregistration upon login of nonexistant accounts.
 	public static final boolean ENABLE_PIC = true; // if false, requires use of Maple Admin to delete characters.	
 	public static final boolean HIDE_GMS_ON_LOGIN = true; // if true, GMs will appear hidden on login.
 	public static final int CHANNEL_LOAD = 1500; // Players per channel
