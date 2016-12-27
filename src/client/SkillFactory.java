@@ -91,7 +91,7 @@ public class SkillFactory {
 	}
 
 	public static void loadAllSkills() {
-		// System.out.println("Loading Skills:::");
+                 System.out.println("Loading Skills:::");
 		final MapleDataDirectoryEntry root = datasource.getRoot();
 
 		int skillid;

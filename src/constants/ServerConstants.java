@@ -70,11 +70,11 @@ public class ServerConstants {
 	public static final String EVENTS = "automsg KerningPQ Boats Subway AirPlane elevator rankings maplestocks"; // there is a rankings event to replace the default rankings tool.
 	
 	// MapleStocks Configuration [Unfinished]
-	public static final boolean USE_MAPLE_STOCKS = true; // if true, MapleStocks will be enabled. (Requires maplestocks event)
-	public static final boolean LOAD_STOCKS_ON_BOOT = true; // if tru,e MapleStocks will be loaded on startup.
-	public static final boolean ALLOW_STOCKS_COMMAND = true; // if true, players can access stocks through @stocks.
-	public static final boolean ALLOW_GM_MARKET_REGULATION = true; // if true, GMs can regulate the stock market (just a little).
-	public static final boolean ALLOW_GM_STOCK_CREATION = true; // if true, GMs can create new stocks with !stocks.
+	public static final boolean USE_MAPLE_STOCKS = false; // if true, MapleStocks will be enabled. (Requires maplestocks event)
+	public static final boolean LOAD_STOCKS_ON_BOOT = false; // if tru,e MapleStocks will be loaded on startup.
+	public static final boolean ALLOW_STOCKS_COMMAND = false; // if true, players can access stocks through @stocks.
+	public static final boolean ALLOW_GM_MARKET_REGULATION = false; // if true, GMs can regulate the stock market (just a little).
+	public static final boolean ALLOW_GM_STOCK_CREATION = false; // if true, GMs can create new stocks with !stocks.
 	public static final boolean ALLOW_STOCK_CRASHES = true; // if true, stocks will be allowed to crash.
 	public static final double STOCK_CRASH_THRESHOLD = 0.375; // percentage of stocks sold per interval to cause crash.
 	public static final double STOCK_DECLINE_THRESHOLD = 0.275; // percentage of stocks sold per interval to cause decline.
