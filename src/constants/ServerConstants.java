@@ -75,7 +75,7 @@ public class ServerConstants {
 	public static final boolean ALLOW_STOCKS_COMMAND = false; // if true, players can access stocks through @stocks.
 	public static final boolean ALLOW_GM_MARKET_REGULATION = false; // if true, GMs can regulate the stock market (just a little).
 	public static final boolean ALLOW_GM_STOCK_CREATION = false; // if true, GMs can create new stocks with !stocks.
-	public static final boolean ALLOW_STOCK_CRASHES = true; // if true, stocks will be allowed to crash.
+	public static final boolean ALLOW_STOCK_CRASHES = false; // if true, stocks will be allowed to crash.
 	public static final double STOCK_CRASH_THRESHOLD = 0.375; // percentage of stocks sold per interval to cause crash.
 	public static final double STOCK_DECLINE_THRESHOLD = 0.275; // percentage of stocks sold per interval to cause decline.
 	public static final int STOCK_VALUE_CAP = Integer.MAX_VALUE; // max value of any stock

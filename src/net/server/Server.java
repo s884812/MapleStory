@@ -213,7 +213,7 @@ public class Server implements Runnable {
 		long startTime; // Used to time loading phases.
 		Output.print("Loading skills.");
 		startTime = System.currentTimeMillis();
-		SkillFactory.loadAllSkills();
+		SkillFactory.getSkill(9999999);
 		Output.print("Loading completed in " + ((System.currentTimeMillis() - startTime)) + "ms.");
 		Output.print("Loading items.");
 		startTime = System.currentTimeMillis();

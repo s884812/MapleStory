@@ -84,36 +84,31 @@ public class SkillFactory {
 	private static MapleDataProvider datasource = MapleDataProviderFactory.getDataProvider(MapleDataProviderFactory.fileInWZPath("Skill.wz"));
 
 	public static ISkill getSkill(int id) {
-		if (!skills.isEmpty()) {
-			return skills.get(Integer.valueOf(id));
-		}
-		return null;
+	if (!skills.isEmpty()) {
+	    return skills.get(Integer.valueOf(id));
 	}
+        System.out.println("Loading Skills:::");
+	final MapleDataDirectoryEntry root = datasource.getRoot();
 
-	public static void loadAllSkills() {
-                 System.out.println("Loading Skills:::");
-		final MapleDataDirectoryEntry root = datasource.getRoot();
+        int skillid;
 
-		int skillid;
+	for (MapleDataFileEntry topDir : root.getFiles()) { // Loop thru jobs
+	    if (topDir.getName().length() <= 8) {
+		for (MapleData data : datasource.getData(topDir.getName())) { // Loop thru each jobs
+		    if (data.getName().equals("skill")) {
+			for (MapleData data2 : data) { // Loop thru each jobs
+			    if (data2 != null) {
+				skillid = Integer.parseInt(data2.getName());
+				skills.put(skillid, loadFromData(skillid, data2));
 
-		for (MapleDataFileEntry topDir : root.getFiles()) { // Loop thru jobs
-			if (topDir.getName().length() <= 8) {
-				for (MapleData data : datasource.getData(topDir.getName())) { // Loop
-																				// thru
-																				// each
-																				// jobs
-					if (data.getName().equals("skill")) {
-						for (MapleData data2 : data) { // Loop thru each jobs
-							if (data2 != null) {
-								skillid = Integer.parseInt(data2.getName());
-								skills.put(skillid, loadFromData(skillid, data2));
-							}
-						}
-					}
-				}
+			    }
 			}
+		    }
 		}
+	    }
 	}
+        return null;
+    }
 
 	public static Skill loadFromData(int id, MapleData data) {
 		Skill ret = new Skill(id);

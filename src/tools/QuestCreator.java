@@ -16,8 +16,8 @@ public class QuestCreator {
         StringBuilder sb = new StringBuilder(); 
         Console con = System.console(); 
         Properties p = new Properties(); 
-        boolean create_config = false; 
-        boolean create_script_file = false; 
+        boolean create_config = true; 
+        boolean create_script_file = true; 
          
         System.out.println("Welcome to the QQC!\r\n\r\n"); 
          
